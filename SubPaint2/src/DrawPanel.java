@@ -1,0 +1,185 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+
+
+
+public class DrawPanel extends JPanel
+{
+    private LinkedList<MyShape> myShapes; //dynamic stack of shapes
+    private LinkedList<MyShape> clearedShapes; //dynamic stack of cleared shapes from undo
+    
+    //current Shape variables
+    private int currentShapeType; //0 for line, 1 for rect, 2 for oval
+    private MyShape currentShapeObject; //stores the current shape object
+    private Color currentShapeColor; //current shape color
+    private boolean currentShapeFilled; //determine whether shape is filled or not
+    
+    JLabel statusLabel; //status label for mouse coordinates
+    
+   
+    
+    /**
+     * This constructor initializes the dynamic stack for myShapes and clearedShapes.
+     * It sets the current shape variables to default values.
+     * It initalizes statusLabel from JLabel passed in.
+     * Sets up the panel and adds event handling for mouse events.
+     */
+    public DrawPanel(JLabel statusLabel){
+        
+        myShapes = new LinkedList<MyShape>(); //initialize myShapes dynamic stack
+        clearedShapes = new LinkedList<MyShape>(); //initialize clearedShapes dynamic stack
+        
+        //Initialize current Shape variables
+        currentShapeType=0;
+        currentShapeObject=null;
+        currentShapeColor=Color.BLACK;
+        currentShapeFilled=false;
+        
+        this.statusLabel = statusLabel; //Initialize statusLabel
+        
+
+        
+        // event handling for mouse and mouse motion events
+        MouseHandler handler = new MouseHandler();                                    
+        addMouseListener( handler );
+        addMouseMotionListener( handler ); 
+    }
+    
+    /**
+     * Calls the draw method for the existing shapes.
+     */
+    public void paintComponent( Graphics g )
+    {
+        super.paintComponent( g );
+        
+        
+        ArrayList<MyShape> shapeArray=myShapes.getArray();
+        for ( int counter=shapeArray.size()-1; counter>=0; counter-- )
+           shapeArray.get(counter).draw(g);
+        
+        
+        if (currentShapeObject!=null)
+            currentShapeObject.draw(g);
+    }
+    
+   
+    public void setCurrentShapeType(int type)
+    {
+        currentShapeType=type;
+    }
+
+    public void setCurrentShapeColor(Color color)
+    {
+        currentShapeColor=color;
+    }
+    
+   
+    public void setCurrentShapeFilled(boolean filled)
+    {
+        currentShapeFilled=filled;
+    }
+    
+    
+  
+    public void clearLastShape()
+    {
+        if (! myShapes.isEmpty())
+        {
+            clearedShapes.addFront(myShapes.removeFront());
+            repaint();
+        }
+    }
+    
+  
+    public void redoLastShape()
+    {
+        if (! clearedShapes.isEmpty())
+        {
+            myShapes.addFront(clearedShapes.removeFront());
+            repaint();
+        }
+    }
+    
+  
+    public void clearDrawing()
+    {
+        myShapes.makeEmpty();
+        clearedShapes.makeEmpty();
+        repaint();
+    }
+    
+ 
+    private class MouseHandler extends MouseAdapter 
+    {
+        
+        public void mousePressed( MouseEvent event )
+        {
+            switch (currentShapeType) //0 for line, 1 for rect, 2 for oval
+            {
+                case 0:
+                    currentShapeObject= new MyLine( event.getX(), event.getY(), 
+                                                   event.getX(), event.getY(), currentShapeColor);
+                    break;
+                case 1:
+                    currentShapeObject= new MyRectangle( event.getX(), event.getY(), 
+                                                        event.getX(), event.getY(), currentShapeColor, currentShapeFilled);
+                    break;
+                case 2:
+                    currentShapeObject= new MyOval( event.getX(), event.getY(), 
+                                                   event.getX(), event.getY(), currentShapeColor, currentShapeFilled);
+                    break;
+                    
+            }
+        } 
+        
+      
+        public void mouseReleased( MouseEvent event )
+        {
+            //sets currentShapeObject x2 & Y2
+            currentShapeObject.setX2(event.getX());
+            currentShapeObject.setY2(event.getY());
+            
+            myShapes.addFront(currentShapeObject);
+            
+            currentShapeObject=null; 
+            clearedShapes.makeEmpty();
+            repaint();
+            
+        } 
+        
+        /**
+         * This method gets the mouse pos when it is moving and sets it to statusLabel.
+         */
+        public void mouseMoved( MouseEvent event )
+        {
+            statusLabel.setText(String.format("Mouse Coordinates X: %d Y: %d",event.getX(),event.getY()));
+        } // end method mouseMoved
+        
+        /**
+         * This method gets the mouse position when it is dragging and sets x2 & y2 of current shape to the mouse pos
+         * It also gets the mouse position when it is dragging and sets it to statusLabel
+         * Then it calls repaint() to redraw the panel
+         */
+        public void mouseDragged( MouseEvent event )
+        {
+            //sets currentShapeObject x2 & Y2
+            currentShapeObject.setX2(event.getX());
+            currentShapeObject.setY2(event.getY());
+            
+            //sets statusLabel to current mouse position
+            statusLabel.setText(String.format("Mouse Coordinates X: %d Y: %d",event.getX(),event.getY()));
+            
+            repaint();
+            
+        }       
+        
+        
+    }// end MouseHandler
+    
+} // end class DrawPanel
