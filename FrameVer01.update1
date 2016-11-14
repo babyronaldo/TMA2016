@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -28,10 +27,9 @@ public class FrameVer01 extends JFrame
 	private JButton undo;
 	private JButton redo;
 	private JButton clear;
+	private JButton btnremove;
 
 	private JCheckBox filled;
-
-	private JPanel widgetJPanel;
 	private JPanel widgetPadder;
 
 	private JCheckBox ckbRectangle;
@@ -52,7 +50,7 @@ public class FrameVer01 extends JFrame
 
 		panel = new DrawPanel(statusLabel);
 		panel.setBackground(new Color(204, 255, 204));
-		panel.setBounds(225, 37, 469, 433);
+		panel.setBounds(225, 37, 569, 433);
 		getContentPane().setLayout(null);
 
 		panelShap = new JPanel();
@@ -91,39 +89,15 @@ public class FrameVer01 extends JFrame
 		lbCircle.setBounds(10, 11, 28, 15);
 		panelShap.add(lbCircle);
 		lbCircle.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		// getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		// create buttons
-		undo = new JButton("Undo");
-		redo = new JButton("Redo");
-		clear = new JButton("Clear");
 
 		// shapes = new JComboBox(shapeOptions);
 		// shapes.setVisible(false);
 		int[] shapes = { 0, 1, 2 };
 
-		filled = new JCheckBox("2D | 3D");
-
-		widgetJPanel = new JPanel();
-		widgetJPanel.setLayout(new GridLayout(1, 6, 10, 10));
-
 		widgetPadder = new JPanel();
 		widgetPadder.setBackground(new Color(0, 153, 0));
-		widgetPadder.setBounds(225, 5, 469, 33);
+		widgetPadder.setBounds(225, 5, 569, 33);
 		widgetPadder.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-
-		// add widgets to widgetJPanel
-
-		// widgetJPanel.add(ckbRectangle);
-		// widgetJPanel.add(ckbCircle);
-		widgetJPanel.add(undo);
-		widgetJPanel.add(redo);
-		widgetJPanel.add(clear);
-		// widgetJPanel.add( colors );
-		// widgetJPanel.add(shapes);
-		widgetJPanel.add(filled);
-		// add widgetJPanel to widgetPadder
-		widgetPadder.add(widgetJPanel);
 
 		// add widgetPadder and panel to JFrame
 		// getContentPane().add(widgetPadder);
@@ -146,20 +120,37 @@ public class FrameVer01 extends JFrame
 
 		// create new ButtonHandler for button event handling
 		ButtonHandler buttonHandler = new ButtonHandler();
-		undo.addActionListener(buttonHandler);
-		redo.addActionListener(buttonHandler);
-		clear.addActionListener(buttonHandler);
 
-		// create handlers for combobox and checkbox
+		// create handlers checkboxs
 		ItemListenerHandler handler = new ItemListenerHandler();
-		// colors.addItemListener( handler );
-		// shapes.addItemListener(handler);
-		filled.addItemListener(handler);
 		ckbCircle.addItemListener(handler);
 		ckbRectangle.addItemListener(handler);
 
+		// btnRemove
+		btnremove = new JButton("Remove");
+		// btnremove.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		widgetPadder.add(btnremove);
+		// getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		// create buttons
+		undo = new JButton("Undo");
+		widgetPadder.add(undo);
+		undo.addActionListener(buttonHandler);
+
+		redo = new JButton("Redo");
+		widgetPadder.add(redo);
+		redo.addActionListener(buttonHandler);
+
+		clear = new JButton("Clear");
+		widgetPadder.add(clear);
+
+		filled = new JCheckBox("2D | 3D");
+		widgetPadder.add(filled);
+		filled.addItemListener(handler);
+		clear.addActionListener(buttonHandler);
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(700, 498);
+		setSize(800, 498);
 		setResizable(false);
 		setVisible(true);
 
