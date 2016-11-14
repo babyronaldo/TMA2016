@@ -1,0 +1,223 @@
+package hien.tmapaint;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+
+public class FrameVer01 extends JFrame
+{
+	// private JLabel stausLabel;
+	private DrawPanel panel;
+
+	private JButton undo;
+	private JButton redo;
+	private JButton clear;
+
+	private JCheckBox filled;
+
+	private JPanel widgetJPanel;
+	private JPanel widgetPadder;
+
+	private JCheckBox ckbRectangle;
+	private JCheckBox ckbCircle;
+	private JPanel panelShap;
+	private JPanel panelCircle;
+	private JLabel lbCircle;
+	private JScrollPane scrollPane;
+	private JPanel panelRectangle;
+	private JLabel lbRectangle;
+	private JScrollPane scrollPane_1;
+
+	public FrameVer01()
+	{
+		super("Test"); // sets the name of DrawFrame
+
+		JLabel statusLabel = new JLabel("");
+
+		panel = new DrawPanel(statusLabel);
+		panel.setBackground(new Color(204, 255, 204));
+		panel.setBounds(225, 37, 469, 433);
+		getContentPane().setLayout(null);
+
+		panelShap = new JPanel();
+		panelShap.setBackground(new Color(153, 204, 0));
+		panelShap.setBounds(0, 5, 215, 465);
+		panelShap.setBorder(BorderFactory.createLineBorder(Color.blue));
+		getContentPane().add(panelShap);
+		panelShap.setLayout(null);
+
+		panelCircle = new JPanel();
+		panelCircle.setBounds(1, 40, 154, 124);
+		panelCircle.setPreferredSize(new Dimension(160, 150));
+		panelShap.add(panelCircle);
+		panelCircle.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(150, 120));
+		panelCircle.add(scrollPane);
+
+		panelRectangle = new JPanel();
+		panelRectangle.setBounds(1, 233, 173, 106);
+		panelRectangle.setPreferredSize(new Dimension(180, 150));
+		panelShap.add(panelRectangle);
+		panelRectangle.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setPreferredSize(new Dimension(170, 100));
+		panelRectangle.add(scrollPane_1);
+
+		lbRectangle = new JLabel("Rectangle");
+		lbRectangle.setBounds(10, 207, 54, 15);
+		panelShap.add(lbRectangle);
+		lbRectangle.setFont(new Font("Tahoma", Font.PLAIN, 12));
+
+		lbCircle = new JLabel("Circle");
+		lbCircle.setBounds(10, 11, 28, 15);
+		panelShap.add(lbCircle);
+		lbCircle.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		// getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		// create buttons
+		undo = new JButton("Undo");
+		redo = new JButton("Redo");
+		clear = new JButton("Clear");
+
+		// shapes = new JComboBox(shapeOptions);
+		// shapes.setVisible(false);
+		int[] shapes = { 0, 1, 2 };
+
+		filled = new JCheckBox("2D | 3D");
+
+		widgetJPanel = new JPanel();
+		widgetJPanel.setLayout(new GridLayout(1, 6, 10, 10));
+
+		widgetPadder = new JPanel();
+		widgetPadder.setBackground(new Color(0, 153, 0));
+		widgetPadder.setBounds(225, 5, 469, 33);
+		widgetPadder.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+
+		// add widgets to widgetJPanel
+
+		// widgetJPanel.add(ckbRectangle);
+		// widgetJPanel.add(ckbCircle);
+		widgetJPanel.add(undo);
+		widgetJPanel.add(redo);
+		widgetJPanel.add(clear);
+		// widgetJPanel.add( colors );
+		// widgetJPanel.add(shapes);
+		widgetJPanel.add(filled);
+		// add widgetJPanel to widgetPadder
+		widgetPadder.add(widgetJPanel);
+
+		// add widgetPadder and panel to JFrame
+		// getContentPane().add(widgetPadder);
+		getContentPane().add(widgetPadder);
+		getContentPane().add(panel, BorderLayout.CENTER);
+
+		ckbRectangle = new JCheckBox("Rectangle");
+		widgetPadder.add(ckbRectangle);
+
+		ckbCircle = new JCheckBox("Circle");
+		widgetPadder.add(ckbCircle);
+		getContentPane().add(panel);
+		panel.setLayout(new BorderLayout(0, 0));
+
+		JSeparator separator = new JSeparator();
+		separator.setBackground(Color.GREEN);
+		separator.setBounds(225, 5, -10, 465);
+		getContentPane().add(separator);
+		separator.setVisible(true);
+
+		// create new ButtonHandler for button event handling
+		ButtonHandler buttonHandler = new ButtonHandler();
+		undo.addActionListener(buttonHandler);
+		redo.addActionListener(buttonHandler);
+		clear.addActionListener(buttonHandler);
+
+		// create handlers for combobox and checkbox
+		ItemListenerHandler handler = new ItemListenerHandler();
+		// colors.addItemListener( handler );
+		// shapes.addItemListener(handler);
+		filled.addItemListener(handler);
+		ckbCircle.addItemListener(handler);
+		ckbRectangle.addItemListener(handler);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(700, 498);
+		setResizable(false);
+		setVisible(true);
+
+	}
+
+	private class ButtonHandler implements ActionListener
+	{
+		// handles button events
+		public void actionPerformed(ActionEvent event)
+		{
+			if (event.getActionCommand().equals("Undo"))
+			{
+				panel.clearLastShape();
+			} else if (event.getActionCommand().equals("Redo"))
+			{
+				panel.redoLastShape();
+			} else if (event.getActionCommand().equals("Clear"))
+			{
+				panel.clearDrawing();
+			}
+
+		}
+	}
+
+	private class ItemListenerHandler implements ItemListener
+	{
+		public void itemStateChanged(ItemEvent event)
+		{
+
+			if (event.getSource() == filled)
+			{
+				boolean checkFill = filled.isSelected() ? true : false; //
+				panel.setCurrentShapeFilled(checkFill);
+			}
+			if (ckbCircle.isSelected() == true && ckbRectangle.isSelected() == false)
+			{
+
+				panel.setCurrentShapeType(2);
+			} else if (ckbRectangle.isSelected() == true && ckbCircle.isSelected() == false)
+			{
+				panel.setCurrentShapeType(1);
+			} else
+				panel.setCurrentShapeType(0);
+
+			if (event.getStateChange() == ItemEvent.SELECTED)
+			{
+
+				// if (event.getSource() == colors)
+				// {
+				// panel.setCurrentShapeColor(colorArray[colors.getSelectedIndex()]);
+				// }
+
+				// if (event.getSource() == shapes)
+				// {
+				// panel.setCurrentShapeType(shapes.getSelectedIndex());
+				// }
+			}
+
+		}
+	}
+}
