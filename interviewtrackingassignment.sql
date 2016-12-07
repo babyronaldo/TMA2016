@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2016 at 11:25 AM
+-- Generation Time: Dec 07, 2016 at 11:48 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.5
 
@@ -60,7 +60,8 @@ INSERT INTO `candidate` (`id`, `WeekNo`, `FullName`, `UniName`, `Gpa`, `Faculty`
 (2, 0, 'adasd', 'asdas', 0, 'asd', 0, 'asd', '2016-12-06', 0, 0, 0, 0, 'asd', '1990-02-26', 'asdasd', 'asd', 'asd', 'asad', 'asd', 'asd', 1),
 (3, 0, 'adasd', 'asdas', 0, 'asd', 0, 'Accountant', '2016-12-06', 0, 0, 0, 0, 'asd', '1990-02-26', 'asdasd', 'asd', 'asd', 'asad', 'asd', 'asd', 1),
 (5, 6, 'Hien Than Quang', 'Hoa Sen', 7, 'Java', 2016, 'Engineer', '2016-12-06', 70, 60, 670, 0, 'Poor him', '1990-02-26', 'hien.thanquang@gmail.com', '0975850880', '207 Cong Hoa str, wards 13, Tan Binh dics, HCMC', 'Bechalor', 'from hell', 'a', 1),
-(6, 0, 'nonamenot', 'asd', 231, 'asd', 0, 'Cleaner', '2016-12-06', 0, 0, 0, 0, 'assssssssssss', '1990-02-26', 'asd', 'asd', 'asd', 'asd', 'asd', 'asd', 1);
+(6, 0, 'nonamenot', 'asd', 231, 'asd', 0, 'Cleaner', '2016-12-06', 0, 0, 0, 0, 'error1', '1990-02-26', 'asd@asd.com', 'asd', 'asd', 'asd', 'asd', 'asd', 1),
+(7, 0, 'asd', 'asd', 0, 'asd', 0, 'asd', '2016-12-07', 0, 0, 0, 0, 'asd', '1990-01-01', 'abc@xyz.com', 'asd', 'asd', 'asd', 'asd', 'contexr', 22);
 
 -- --------------------------------------------------------
 
@@ -84,7 +85,8 @@ CREATE TABLE `manager` (
 INSERT INTO `manager` (`id`, `name`, `username`, `password`, `enable`, `roleID`) VALUES
 (1, 'Nazi', 'nazi', '1234', 1, 1),
 (19, 'PM01', 'pm01', '1234', 1, 34),
-(21, 'Interviewer01', 'inter01', '1234', 0, 39);
+(21, 'a', 'inter01', '1234', 1, 51),
+(22, 'aaaaaaasdasdasd', 'a', 'a', 1, 53);
 
 -- --------------------------------------------------------
 
@@ -107,7 +109,20 @@ INSERT INTO `role` (`id`, `roleName`) VALUES
 (3, 'ROLE_INTERVIEWER'),
 (34, 'ROLE_PM'),
 (38, 'ROLE_INTERVIEWER'),
-(39, 'ROLE_ADMIN');
+(39, 'ROLE_ADMIN'),
+(40, 'ROLE_ADMIN'),
+(41, 'ROLE_ADMIN'),
+(42, 'ROLE_INTERVIEWER'),
+(43, 'ROLE_ADMIN'),
+(44, 'ROLE_ADMIN'),
+(45, 'ROLE_ADMIN'),
+(46, 'ROLE_ADMIN'),
+(47, 'ROLE_ADMIN'),
+(49, 'ROLE_ADMIN'),
+(50, 'ROLE_ADMIN'),
+(51, 'ROLE_ADMIN'),
+(52, 'ROLE_PM'),
+(53, 'ROLE_ADMIN');
 
 --
 -- Indexes for dumped tables
@@ -141,17 +156,17 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `candidate`
 --
 ALTER TABLE `candidate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `manager`
 --
 ALTER TABLE `manager`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 --
 -- Constraints for dumped tables
 --
